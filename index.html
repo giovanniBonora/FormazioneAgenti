@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Immagine</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    img {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+      object-position: center;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+    #fullscreenBtn {
+      position: fixed;
+      right: max(14px, env(safe-area-inset-right));
+      bottom: max(14px, env(safe-area-inset-bottom));
+      z-index: 10;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.82);
+      color: #111;
+      font: 600 14px system-ui, sans-serif;
+      cursor: pointer;
+    }
+    #fullscreenBtn.hidden { display: none; }
+  </style>
+</head>
+<body>
+  <img src="immagine.jpg" alt="Immagine">
+
+  <button id="fullscreenBtn" type="button">⛶ Schermo intero</button>
+
+  <script>
+    const btn = document.getElementById('fullscreenBtn');
+
+    async function enterFullscreen() {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen?.();
+        }
+      } catch (e) {
+        // Alcuni browser mobili non permettono il fullscreen via JavaScript.
+      }
+      btn.classList.add('hidden');
+    }
+
+    btn.addEventListener('click', enterFullscreen);
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        btn.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
